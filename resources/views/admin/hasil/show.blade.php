@@ -384,8 +384,12 @@ function filterAnswers(type) {
 
 // Download PDF
 function downloadPDF() {
-    // Implement PDF download logic
-    alert('Mengunduh laporan PDF...');
+    // Get the result ID from the current page URL
+    const pathParts = window.location.pathname.split('/');
+    const resultId = pathParts[pathParts.length - 1];
+
+    // Redirect to the PDF download endpoint
+    window.location.href = `/admin/hasil/${resultId}/pdf`;
 }
 
 // Send Email
