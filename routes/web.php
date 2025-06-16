@@ -6,9 +6,9 @@ use App\Http\Controllers\Admin\PaketController;
 use App\Http\Controllers\Admin\SoalController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\TryoutController;
-use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckRole;
 use App\Models\Paket;
 
@@ -53,7 +53,7 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':user'])->group(funct
         Route::get('/tryout/history/export-pdf', [DashboardUserController::class, 'exportHistoryPdf'])->name('history.export.pdf');
         Route::get('/admin/hasil/{id}/export-pdf', [App\Http\Controllers\Admin\DashboardController::class, 'exportPdf'])->name('admin.hasil.export.pdf')->middleware(['auth', 'admin']);
     });
-        // PDF Export routes
+    // PDF Export routes
 
     // Profile
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -74,7 +74,6 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
 
     // Manajemen Users
     Route::resource('users', UserController::class);
-
     // Manajemen Paket & Kategori
     Route::resource('paket', PaketController::class);
     Route::resource('kategori', KategoriController::class);
@@ -92,4 +91,4 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     Route::get('/semua-user', [DashboardController::class, 'users'])->name('user.index');
 });
 
-    require __DIR__ . '/auth.php';
+require __DIR__ . '/auth.php';
