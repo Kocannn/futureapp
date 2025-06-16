@@ -79,4 +79,67 @@ class DashboardUserController extends Controller
 
         return view('tryout.hasil', compact('hasil', 'jawaban', 'jawabanBenar', 'jawabanSalah'));
     }
+    /**
+     * Display all tryout results for the current user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function history()
+    {
+        $userId = Auth::id();
+
+        // Get all results grouped by paket
+        $results = HasilTryout::where('user_id', $userId)
+            ->with('paket')
+            ->orderByDesc('created_at')
+            ->get()
+            ->groupBy('paket_id');
+
+        // Get attempt counts for each paket
+        $attemptCounts = HasilTryout::where('user_id', $userId)
+            ->selectRaw('paket_id, COUNT(*) as count')
+            ->groupBy('paket_id')
+            ->pluck('count', 'paket_id')
+            ->toArray();
+
+        return view('tryout.history', compact('results', 'attemptCounts'));
+    }
+    /**
+     * Export user's tryout history to PDF
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exportHistoryPdf()
+    {
+        $userId = Auth::id();
+        $user = Auth::user();
+
+        // Get all results grouped by paket
+        $results = HasilTryout::where('user_id', $userId)
+            ->with('paket')
+            ->orderByDesc('created_at')
+            ->get()
+            ->groupBy('paket_id');
+
+        // Get attempt counts for each paket
+        $attemptCounts = HasilTryout::where('user_id', $userId)
+            ->selectRaw('paket_id, COUNT(*) as count')
+            ->groupBy('paket_id')
+            ->pluck('count', 'paket_id')
+            ->toArray();
+
+        // Generate PDF
+        $pdf = \PDF::loadView('pdf.history-tryout', [
+            'user' => $user,
+            'results' => $results,
+            'attemptCounts' => $attemptCounts,
+            'date' => now()->format('d F Y')
+        ]);
+
+        // Set filename
+        $filename = 'riwayat-tryout-' . $user->name . '-' . now()->format('Ymd') . '.pdf';
+
+        // Download the PDF
+        return $pdf->download($filename);
+    }
 }

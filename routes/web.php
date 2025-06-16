@@ -8,8 +8,8 @@ use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\TryoutController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckRole;
-use App\Http\Controllers\Admin\UserController;
 use App\Models\Paket;
 
 // ============================
@@ -39,9 +39,6 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':user'])->group(funct
     // Dashboard user
     Route::get('/dashboard', [DashboardUserController::class, 'index'])->name('dashboard');
 
-    // Show detailed tryout results - moved outside tryout prefix
-    Route::get('/hasil/{hasil_id}', [DashboardUserController::class, 'showHasil'])->name('dashboard.hasil');
-
     // Tryout
     Route::prefix('tryout')->name('tryout.')->group(function () {
         Route::get('/', [TryoutController::class, 'index'])->name('index');
@@ -49,16 +46,20 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':user'])->group(funct
         Route::post('/{id}/submit', [TryoutController::class, 'submit'])->name('submit');
         Route::get('/{id}/hasil', [TryoutController::class, 'hasil'])->name('hasil');
         Route::get('/tryout/hasil/{hasil_id}', [App\Http\Controllers\DashboardUserController::class, 'showHasil'])->name('tryout.hasil');
-
-        Route::get('/dashboard/hasil/{hasil_id}', [DashboardUserController::class, 'showHasil'])->name('dashboard.hasil');
         Route::get('/dashboard/hasil/{hasil_id}', [App\Http\Controllers\DashboardUserController::class, 'showHasil'])->name('dashboard.hasil');
+        Route::get('/history', [DashboardUserController::class, 'history'])->name('history');
 
-        // Profile
-        Route::prefix('profile')->name('profile.')->group(function () {
-            Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-            Route::patch('/', [ProfileController::class, 'update'])->name('update');
-            Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
-        });
+        Route::get('/tryout/{id}/export-pdf', [TryoutController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/tryout/history/export-pdf', [DashboardUserController::class, 'exportHistoryPdf'])->name('history.export.pdf');
+        Route::get('/admin/hasil/{id}/export-pdf', [App\Http\Controllers\Admin\DashboardController::class, 'exportPdf'])->name('admin.hasil.export.pdf')->middleware(['auth', 'admin']);
+    });
+        // PDF Export routes
+
+    // Profile
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 });
 
@@ -77,7 +78,6 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     // Manajemen Paket & Kategori
     Route::resource('paket', PaketController::class);
     Route::resource('kategori', KategoriController::class);
-
     // Soal
     Route::resource('soal', SoalController::class);
 
@@ -88,10 +88,8 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     Route::get('/peringkat/top', [DashboardController::class, 'topRankings'])->name('peringkat.top');
     Route::get('/peringkat/{paket_id}', [DashboardController::class, 'peringkat'])->name('peringkat.show');
 
-    // User Management
-    Route::resource('user', UserController::class);
     // Semua user
     Route::get('/semua-user', [DashboardController::class, 'users'])->name('user.index');
 });
 
-require __DIR__ . '/auth.php';
+    require __DIR__ . '/auth.php';

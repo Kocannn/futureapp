@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\HasilTryout;
@@ -205,14 +206,104 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function hasilPaket()
+    public function hasilPaket($id)
     {
-        // Get all packages that have results
-        $pakets = Paket::whereHas('hasilTryouts')->get();
+        // Find the HasilTryout record
+        $hasil = HasilTryout::with(['paket'])->findOrFail($id);
 
-        return view('admin.hasil.paket', compact('pakets'));
+
+        // Find previous attempts to determine the start time for this attempt
+        $previousAttempt = HasilTryout::where('user_id', Auth::id())
+            ->where('paket_id', $hasil->paket_id)
+            ->where('created_at', '<', $hasil->created_at)
+            ->orderByDesc('created_at')
+            ->first();
+
+        // If there was a previous attempt, get answers after it was completed
+        // If this was the first attempt, get all answers from the beginning
+        $startTime = $previousAttempt ? $previousAttempt->waktu_selesai : null;
+
+        // Get only this attempt's answers
+        $jawaban = \App\Models\JawabanUser::where('user_id', Auth::id())
+            ->where('paket_id', $hasil->paket_id)
+            ->when($startTime, function ($query) use ($startTime) {
+                return $query->where('created_at', '>', $startTime);
+            })
+            ->where('created_at', '<=', $hasil->waktu_selesai)
+            ->with('soal')
+            ->get()
+            ->map(function ($item) {
+                $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+                return $item;
+            });
+
+        // Count correct and incorrect answers
+        $jawabanBenar = $jawaban->filter(function ($item) {
+            return $item->is_correct;
+        });
+
+        $jawabanSalah = $jawaban->filter(function ($item) {
+            return !$item->is_correct;
+        });
+
+        return view('tryout.hasil', compact('hasil', 'jawaban', 'jawabanBenar', 'jawabanSalah'));
     }
+    /**
+     * Export user results to PDF
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportPdf($id)
+    {
+        // Find the HasilTryout record
+        $hasil = HasilTryout::with(['user', 'paket'])->findOrFail($id);
 
+        // Calculate attempt number
+        $attemptNumber = HasilTryout::where('user_id', $hasil->user_id)
+            ->where('paket_id', $hasil->paket_id)
+            ->where('created_at', '<=', $hasil->created_at)
+            ->orderBy('created_at')
+            ->count();
+
+        $hasil->attempt_number = $attemptNumber;
+
+        // Find previous attempts to determine the start time for this attempt
+        $previousAttempt = HasilTryout::where('user_id', $hasil->user_id)
+            ->where('paket_id', $hasil->paket_id)
+            ->where('created_at', '<', $hasil->created_at)
+            ->orderByDesc('created_at')
+            ->first();
+
+        // Get the answers for this attempt
+        $startTime = $previousAttempt ? $previousAttempt->waktu_selesai : null;
+
+        $jawaban = JawabanUser::where('user_id', $hasil->user_id)
+            ->where('paket_id', $hasil->paket_id)
+            ->when($startTime, function ($query) use ($startTime) {
+                return $query->where('created_at', '>', $startTime);
+            })
+            ->where('created_at', '<=', $hasil->waktu_selesai)
+            ->with('soal')
+            ->get()
+            ->map(function ($item) {
+                $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+                return $item;
+            });
+
+        // Generate PDF
+        $pdf = \PDF::loadView('pdf.admin-hasil-tryout', [
+            'hasil' => $hasil,
+            'jawaban' => $jawaban,
+            'date' => now()->format('d F Y')
+        ]);
+
+        // Set filename
+        $filename = 'admin-hasil-tryout-' . $hasil->user->name . '-' . $hasil->paket->judul . '-' . now()->format('Ymd') . '.pdf';
+
+        // Download the PDF
+        return $pdf->download($filename);
+    }
     public function show($id)
     {
         // This is a generic show method being added to prevent the error

@@ -19,7 +19,7 @@
 
     <!-- Score Card -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-        <div class="grid md:grid-cols-4 gap-6 text-center">
+        <div class="grid md:grid-cols-3 gap-6 text-center">
             <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
                 <h3 class="text-sm font-medium text-gray-500 mb-1">SKOR</h3>
                 <p class="text-3xl font-bold text-gray-900">{{ $hasil->skor }}%</p>
@@ -32,10 +32,7 @@
                 <h3 class="text-sm font-medium text-gray-500 mb-1">SALAH</h3>
                 <p class="text-3xl font-bold text-red-600">{{ count($jawabanSalah) }}</p>
             </div>
-            <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
-                <h3 class="text-sm font-medium text-gray-500 mb-1">WAKTU</h3>
-                <p class="text-3xl font-bold text-purple-600">{{ \Carbon\Carbon::parse($hasil->waktu_selesai)->diffInMinutes($hasil->waktu_mulai) }} menit</p>
-            </div>
+
         </div>
     </div>
 
