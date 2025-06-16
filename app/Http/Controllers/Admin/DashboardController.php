@@ -292,7 +292,7 @@ class DashboardController extends Controller
             });
 
         // Generate PDF
-        $pdf = \PDF::loadView('pdf.admin-hasil-tryout', [
+        $pdf = \PDF::loadView('pdf.admin-tryout', [
             'hasil' => $hasil,
             'jawaban' => $jawaban,
             'date' => now()->format('d F Y')

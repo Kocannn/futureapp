@@ -14,13 +14,7 @@
                 Kembali ke Daftar
             </a>
             <div class="h-6 w-px bg-gray-300"></div>
-            <a href="{{ route('admin.user.show', $user->id) }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                </svg>
-                Lihat Detail
-            </a>
+
         </div>
         <h1 class="text-3xl font-bold text-gray-900">Edit Pengguna</h1>
         <p class="text-gray-600 mt-2">Perbarui informasi pengguna "{{ $user->name }}"</p>
@@ -28,24 +22,9 @@
 
     <!-- Form Card -->
     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg>
-                    Edit Informasi Pengguna
-                </h2>
-                <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                        <span class="text-sm font-medium text-white">{{ substr($user->name, 0, 1) }}</span>
-                    </div>
-                    <span class="text-sm text-gray-600">ID: {{ $user->id }}</span>
-                </div>
-            </div>
-        </div>
 
-        <form action="{{ route('admin.user.update', $user->id) }}" method="POST" class="p-6">
+
+        <form action="{{ route('admin.users.update', $user->id) }}" method="POST" class="p-6">
             @csrf
             @method('PUT')
 
@@ -312,10 +291,7 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 mt-8">
-                <a href="{{ route('admin.user.show', $user->id) }}"
-                   class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors">
-                    Batal
-                </a>
+
                 <button type="submit"
                         class="px-6 py-2 bg-amber-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors">
                     <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">

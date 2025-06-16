@@ -84,7 +84,7 @@
         </tr>
         <tr>
             <th>Durasi</th>
-            <td>{{ $hasil->waktu_selesai->diffInMinutes($hasil->waktu_mulai) }} menit</td>
+            <td>{{ \Carbon\Carbon::parse($hasil->waktu_selesai)->diffInMinutes(\Carbon\Carbon::parse($hasil->waktu_mulai)) }} menit</td>
         </tr>
     </table>
 
@@ -114,10 +114,38 @@
             </td>
         </tr>
         @endforeach
-    </table>
+</table>
+
+    <h2 style="margin-top: 20px;">Pembahasan Soal</h2>
+    @foreach($jawaban as $index => $item)
+    <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
+        <div style="font-weight: bold; margin-bottom: 5px;">Soal #{{ $index + 1 }}</div>
+        <div style="margin-bottom: 5px;">{{ $item->soal->pertanyaan }}</div>
+
+        <div style="display: flex; margin-bottom: 5px;">
+            <div style="width: 120px; font-weight: bold;">Jawaban Anda:</div>
+            <div class="{{ $item->is_correct ? 'correct' : 'incorrect' }}">{{ $item->jawaban_user }}</div>
+        </div>
+
+        <div style="display: flex; margin-bottom: 10px;">
+            <div style="width: 120px; font-weight: bold;">Jawaban Benar:</div>
+            <div>{{ $item->soal->jawaban_benar }}</div>
+        </div>
+
+        @if($item->soal->pembahasan)
+        <div style="border-top: 1px dashed #ccc; padding-top: 8px;">
+            <div style="font-weight: bold; margin-bottom: 3px;">Pembahasan:</div>
+            <div>{{ $item->soal->pembahasan }}</div>
+        </div>
+        @else
+        <div style="border-top: 1px dashed #ccc; padding-top: 8px; color: #888;">
+            Tidak ada pembahasan untuk soal ini.
+        </div>
+        @endif
+    </div>
+    @endforeach
 
     <div style="text-align: center; font-size: 10px; margin-top: 30px;">
-        Dokumen ini dicetak pada {{ now()->format('d F Y H:i') }} oleh administrator
-    </div>
+
 </body>
 </html>
