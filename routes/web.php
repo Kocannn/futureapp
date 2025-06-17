@@ -6,9 +6,9 @@ use App\Http\Controllers\Admin\PaketController;
 use App\Http\Controllers\Admin\SoalController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\TryoutController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\CheckRole;
 use App\Models\Paket;
 
@@ -86,8 +86,6 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     Route::get('/peringkat/top', [DashboardController::class, 'topRankings'])->name('peringkat.top');
     Route::get('/peringkat/{paket_id}', [DashboardController::class, 'peringkat'])->name('peringkat.show');
     Route::get('/hasil/{id}/pdf', [App\Http\Controllers\Admin\DashboardController::class, 'exportPdf'])->name('admin.hasil.export.pdf');
-    // Semua user
-    Route::get('/semua-user', [DashboardController::class, 'users'])->name('user.index');
 });
 
 require __DIR__ . '/auth.php';

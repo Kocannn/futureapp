@@ -156,11 +156,19 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900 max-w-md">
-                                    <p class="line-clamp-2">{{ Str::limit($soal->pertanyaan, 80) }}</p>
-                                </div>
-                            </td>
+<td class="px-6 py-4">
+    <div class="text-sm text-gray-900 max-w-md">
+        <p class="line-clamp-2">{!! Str::limit(strip_tags($soal->pertanyaan), 80) !!}</p>
+        @if(!empty($soal->tables))
+            <span class="inline-flex items-center mt-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Memiliki Tabel
+            </span>
+        @endif
+    </div>
+</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     {{ $soal->jawaban_benar }}

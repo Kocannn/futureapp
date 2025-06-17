@@ -125,7 +125,7 @@ class UserController extends Controller
 
         $user->update($userData);
 
-        return redirect()->route('admin.user.edit', $user->id)
+        return redirect()->route('admin.users.index')
             ->with('success', 'User updated successfully.');
     }
 

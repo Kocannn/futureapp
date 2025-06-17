@@ -17,6 +17,7 @@ class Soal extends Model
         'pilihan_c',
         'pilihan_d',
         'pilihan_e',
+        'tables',
         'jawaban_benar',
         'pembahasan'
     ];

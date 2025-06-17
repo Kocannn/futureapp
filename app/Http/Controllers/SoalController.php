@@ -35,7 +35,7 @@ class SoalController extends Controller
     {
         $request->validate([
             'paket_id' => 'required|exists:pakets,id',
-            'pertanyaan' => 'required|string',
+            'pertanyaan' => 'required',
             'pilihan_a' => 'required|string',
             'pilihan_b' => 'required|string',
             'pilihan_c' => 'required|string',
@@ -43,6 +43,8 @@ class SoalController extends Controller
             'pilihan_e' => 'required|string',
             'jawaban_benar' => 'required|in:A,B,C,D,E',
         ]);
+
+
 
         Soal::create($request->all());
 

@@ -190,11 +190,36 @@
                     </div>
 
                     <div class="mb-8">
-                        <div class="prose prose-gray max-w-none">
-                            <p class="text-gray-800 leading-relaxed text-base">
-                                ${question.pertanyaan}
-                            </p>
-                        </div>
+<p class="text-gray-800 leading-relaxed text-base mb-4">
+    ${question.pertanyaan}
+</p>
+
+${question.tables ? (() => {
+    try {
+        const tableData = JSON.parse(question.tables);
+        const headers = tableData.headers.map(h => `<th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-600 uppercase tracking-wider border-b">${h}</th>`).join('');
+        const rows = tableData.rows.map((row, rowIndex) =>
+            `<tr class="${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                ${row.map(col => `<td class="px-4 py-3 text-sm text-gray-700 border-b border-gray-200">${col}</td>`).join('')}
+            </tr>`
+        ).join('');
+
+        return `
+            <div class="overflow-x-auto mt-4 mb-6 rounded-lg border border-gray-200 shadow-sm">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>${headers}</tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        ${rows}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    } catch (e) {
+        return `<p class="text-red-500 mt-2">Gagal memuat tabel</p>`;
+    }
+})() : ''}
                     </div>
 
                     <div class="space-y-3 mb-8" id="options-${index}">
