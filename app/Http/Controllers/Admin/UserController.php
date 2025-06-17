@@ -18,6 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+
         return view('admin.user.index', compact('users'));
     }
 
@@ -34,7 +35,6 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -79,13 +79,13 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
         return view('admin.user.edit', compact('user'));
     }
 
     /**
      * Update the specified user in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -95,7 +95,7 @@ class UserController extends Controller
 
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'role' => 'required|in:admin,user',
         ];
 
@@ -117,9 +117,9 @@ class UserController extends Controller
         }
 
         // Handle email verification status
-        if ($request->has('email_verified') && !$user->email_verified_at) {
+        if ($request->has('email_verified') && ! $user->email_verified_at) {
             $userData['email_verified_at'] = now();
-        } elseif (!$request->has('email_verified') && $user->email_verified_at) {
+        } elseif (! $request->has('email_verified') && $user->email_verified_at) {
             $userData['email_verified_at'] = null;
         }
 

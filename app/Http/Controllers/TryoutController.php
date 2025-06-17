@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paket;
 use App\Models\HasilTryout;
 use App\Models\JawabanUser;
+use App\Models\Paket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +13,7 @@ class TryoutController extends Controller
     public function index()
     {
         $pakets = Paket::all();
+
         return view('tryout.index', compact('pakets'));
     }
 
@@ -34,7 +35,7 @@ class TryoutController extends Controller
         $userId = Auth::id();
 
         foreach ($paket->soals as $soal) {
-            $inputName = 'jawaban-' . $soal->id;
+            $inputName = 'jawaban-'.$soal->id;
             $userAnswer = $request->input($inputName);
 
             if ($userAnswer) {
@@ -43,7 +44,7 @@ class TryoutController extends Controller
                     'user_id' => $userId,
                     'paket_id' => $paket->id,
                     'soal_id' => $soal->id,
-                    'jawaban_user' => $userAnswer
+                    'jawaban_user' => $userAnswer,
                 ]);
 
                 // Check if answer is correct
@@ -69,7 +70,7 @@ class TryoutController extends Controller
             'jumlah_salah' => $wrongAnswers,
             'skor' => $percentageScore,
             'waktu_mulai' => now()->subMinutes($request->input('duration', 0)),
-            'waktu_selesai' => now()
+            'waktu_selesai' => now(),
         ]);
 
         // Redirect to detailed results page
@@ -108,6 +109,7 @@ class TryoutController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+
                 return $item;
             });
 
@@ -117,15 +119,15 @@ class TryoutController extends Controller
         });
 
         $jawabanSalah = $jawaban->filter(function ($item) {
-            return !$item->is_correct;
+            return ! $item->is_correct;
         });
 
         return view('tryout.hasil', compact('hasil', 'jawaban', 'jawabanBenar', 'jawabanSalah'));
     }
+
     /**
      * Process the tryout submission and show results
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function selesai(Request $request)
@@ -151,10 +153,11 @@ class TryoutController extends Controller
         // Redirect to the hasil page with explanations
         return redirect()->route('tryout.hasil', ['hasil_id' => $hasil->id]);
     }
+
     /**
      * Export tryout results to PDF
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function exportPdf($id)
@@ -188,6 +191,7 @@ class TryoutController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+
                 return $item;
             });
 
@@ -197,7 +201,7 @@ class TryoutController extends Controller
         });
 
         $jawabanSalah = $jawaban->filter(function ($item) {
-            return !$item->is_correct;
+            return ! $item->is_correct;
         });
 
         // Generate PDF
@@ -205,11 +209,11 @@ class TryoutController extends Controller
             'hasil' => $hasil,
             'jawaban' => $jawaban,
             'jawabanBenar' => $jawabanBenar,
-            'jawabanSalah' => $jawabanSalah
+            'jawabanSalah' => $jawabanSalah,
         ]);
 
         // Set filename
-        $filename = 'hasil-tryout-' . $hasil->paket->judul . '-' . now()->format('Ymd') . '.pdf';
+        $filename = 'hasil-tryout-'.$hasil->paket->judul.'-'.now()->format('Ymd').'.pdf';
 
         // Download the PDF
         return $pdf->download($filename);

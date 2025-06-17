@@ -1,16 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\PaketController;
 use App\Http\Controllers\Admin\SoalController;
-use App\Http\Controllers\Admin\KategoriController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\DashboardUserController;
-use App\Http\Controllers\TryoutController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DashboardUserController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TryoutController;
 use App\Http\Middleware\CheckRole;
 use App\Models\Paket;
+use Illuminate\Support\Facades\Route;
 
 // ============================
 // ✅ GUEST ROUTES
@@ -22,19 +22,18 @@ Route::get('/', function () {
         if (auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
+
         return redirect()->route('dashboard');
     }
     $pakets = Paket::all();
+
     return view('welcome', compact('pakets'));
 });
-
-
-
 
 // ============================
 // ✅ AUTHENTICATED USER ROUTES
 // ============================
-Route::middleware(['auth', 'verified', CheckRole::class . ':user'])->group(function () {
+Route::middleware(['auth', 'verified', CheckRole::class.':user'])->group(function () {
 
     // Dashboard user
     Route::get('/dashboard', [DashboardUserController::class, 'index'])->name('dashboard');
@@ -62,11 +61,10 @@ Route::middleware(['auth', 'verified', CheckRole::class . ':user'])->group(funct
     });
 });
 
-
 // ============================
 // ✅ ADMIN ROUTES
 // ============================
-Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', CheckRole::class.':admin'])->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -88,4 +86,4 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     Route::get('/hasil/{id}/pdf', [App\Http\Controllers\Admin\DashboardController::class, 'exportPdf'])->name('admin.hasil.export.pdf');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\HasilTryout;
-use App\Models\Paket;
 use App\Models\JawabanUser;
+use App\Models\Paket;
 use App\Models\Soal;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -34,10 +33,9 @@ class DashboardController extends Controller
                 return [
                     'user' => $result->user,
                     'score' => $result->highest_score,
-                    'time' => $result->best_time
+                    'time' => $result->best_time,
                 ];
             });
-
 
         return view('admin.dashboard', compact(
             'users_count',
@@ -52,6 +50,7 @@ class DashboardController extends Controller
     public function users()
     {
         $users = User::where('role', 'user')->get();
+
         return view('admin.user.index', compact('users'));
     }
 
@@ -87,7 +86,7 @@ class DashboardController extends Controller
 
             $groupedHasil->put($paketId, [
                 'paket' => $paket,
-                'attempts' => $sortedAttempts
+                'attempts' => $sortedAttempts,
             ]);
         }
 
@@ -111,12 +110,14 @@ class DashboardController extends Controller
     public function listPaketPeringkat()
     {
         $pakets = Paket::all();
+
         return view('admin.peringkat.index', compact('pakets'));
     }
+
     /**
      * Show the detailed result of a specific tryout attempt
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function hasilShow($id)
@@ -155,6 +156,7 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+
                 return $item;
             });
 
@@ -171,6 +173,7 @@ class DashboardController extends Controller
 
         return view('admin.hasil.show', compact('hasil', 'jawaban', 'jawabanBenar', 'jawabanSalah', 'jawaban_detail'));
     }
+
     /**
      * Display the top overall rankings across all packages
      *
@@ -201,6 +204,7 @@ class DashboardController extends Controller
 
         return view('admin.peringkat.top', compact('rankings'));
     }
+
     /**
      * Display results grouped by package
      *
@@ -210,7 +214,6 @@ class DashboardController extends Controller
     {
         // Find the HasilTryout record
         $hasil = HasilTryout::with(['paket'])->findOrFail($id);
-
 
         // Find previous attempts to determine the start time for this attempt
         $previousAttempt = HasilTryout::where('user_id', Auth::id())
@@ -234,6 +237,7 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+
                 return $item;
             });
 
@@ -243,15 +247,16 @@ class DashboardController extends Controller
         });
 
         $jawabanSalah = $jawaban->filter(function ($item) {
-            return !$item->is_correct;
+            return ! $item->is_correct;
         });
 
         return view('tryout.hasil', compact('hasil', 'jawaban', 'jawabanBenar', 'jawabanSalah'));
     }
+
     /**
      * Export user results to PDF
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function exportPdf($id)
@@ -288,6 +293,7 @@ class DashboardController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+
                 return $item;
             });
 
@@ -295,15 +301,16 @@ class DashboardController extends Controller
         $pdf = \PDF::loadView('pdf.admin-tryout', [
             'hasil' => $hasil,
             'jawaban' => $jawaban,
-            'date' => now()->format('d F Y')
+            'date' => now()->format('d F Y'),
         ]);
 
         // Set filename
-        $filename = 'admin-hasil-tryout-' . $hasil->user->name . '-' . $hasil->paket->judul . '-' . now()->format('Ymd') . '.pdf';
+        $filename = 'admin-hasil-tryout-'.$hasil->user->name.'-'.$hasil->paket->judul.'-'.now()->format('Ymd').'.pdf';
 
         // Download the PDF
         return $pdf->download($filename);
     }
+
     public function show($id)
     {
         // This is a generic show method being added to prevent the error

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paket;
 use App\Models\HasilTryout;
-use Illuminate\Http\Request;
+use App\Models\Paket;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardUserController extends Controller
@@ -29,7 +28,7 @@ class DashboardUserController extends Controller
     /**
      * Display the results of a completed tryout with explanations
      *
-     * @param int $hasil_id
+     * @param  int  $hasil_id
      * @return \Illuminate\Http\Response
      */
     public function showHasil($hasil_id)
@@ -65,6 +64,7 @@ class DashboardUserController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_correct = $item->jawaban_user === $item->soal->jawaban_benar;
+
                 return $item;
             });
 
@@ -74,11 +74,12 @@ class DashboardUserController extends Controller
         });
 
         $jawabanSalah = $jawaban->filter(function ($item) {
-            return !$item->is_correct;
+            return ! $item->is_correct;
         });
 
         return view('tryout.hasil', compact('hasil', 'jawaban', 'jawabanBenar', 'jawabanSalah'));
     }
+
     /**
      * Display all tryout results for the current user
      *
@@ -104,6 +105,7 @@ class DashboardUserController extends Controller
 
         return view('tryout.history', compact('results', 'attemptCounts'));
     }
+
     /**
      * Export user's tryout history to PDF
      *
@@ -133,11 +135,11 @@ class DashboardUserController extends Controller
             'user' => $user,
             'results' => $results,
             'attemptCounts' => $attemptCounts,
-            'date' => now()->format('d F Y')
+            'date' => now()->format('d F Y'),
         ]);
 
         // Set filename
-        $filename = 'riwayat-tryout-' . $user->name . '-' . now()->format('Ymd') . '.pdf';
+        $filename = 'riwayat-tryout-'.$user->name.'-'.now()->format('Ymd').'.pdf';
 
         // Download the PDF
         return $pdf->download($filename);

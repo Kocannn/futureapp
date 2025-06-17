@@ -19,9 +19,8 @@ class Soal extends Model
         'pilihan_e',
         'tables',
         'jawaban_benar',
-        'pembahasan'
+        'pembahasan',
     ];
-
 
     public function paket()
     {

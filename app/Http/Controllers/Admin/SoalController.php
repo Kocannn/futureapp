@@ -3,21 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Soal;
 use App\Models\Paket;
+use App\Models\Soal;
+use Illuminate\Http\Request;
 
 class SoalController extends Controller
 {
     public function index()
     {
         $soals = Soal::all();
+
         return view('admin.soal.index', compact('soals'));
     }
 
     public function create()
     {
         $paketSoals = Paket::all();
+
         return view('admin.soal.create', compact('paketSoals'));
     }
 
@@ -44,7 +46,7 @@ class SoalController extends Controller
             // Parse rows
             $rows = collect(explode("\n", $request->table_rows))
                 ->filter(function ($row) {
-                    return !empty(trim($row));
+                    return ! empty(trim($row));
                 })
                 ->map(function ($row) {
                     return array_map('trim', explode(',', $row));
@@ -54,7 +56,7 @@ class SoalController extends Controller
             // Buat struktur JSON tabel
             $tableData = [
                 'headers' => $headers,
-                'rows' => $rows
+                'rows' => $rows,
             ];
         }
 
@@ -77,10 +79,10 @@ class SoalController extends Controller
         return redirect()->route('admin.soal.index')->with('success', 'Soal berhasil ditambahkan!');
     }
 
-
     public function show($id)
     {
         $soal = Soal::findOrFail($id);
+
         return view('admin.soal.show', compact('soal'));
     }
 
@@ -105,7 +107,6 @@ class SoalController extends Controller
             'table_rows' => 'nullable|string',
         ]);
 
-
         $soal = Soal::findOrFail($id);
 
         // Proses data tabel jika ada
@@ -117,7 +118,7 @@ class SoalController extends Controller
             // Parse rows
             $rows = collect(explode("\n", $request->table_rows))
                 ->filter(function ($row) {
-                    return !empty(trim($row));
+                    return ! empty(trim($row));
                 })
                 ->map(function ($row) {
                     return array_map('trim', explode(',', $row));
@@ -127,7 +128,7 @@ class SoalController extends Controller
             // Buat struktur JSON tabel
             $tableData = [
                 'headers' => $headers,
-                'rows' => $rows
+                'rows' => $rows,
             ];
         }
 
@@ -144,6 +145,7 @@ class SoalController extends Controller
     {
         $soal = Soal::findOrFail($id);
         $soal->delete();
+
         return redirect()->route('admin.soal.index')->with('success', 'Soal berhasil dihapus!');
     }
 }

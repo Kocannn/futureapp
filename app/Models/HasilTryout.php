@@ -15,7 +15,7 @@ class HasilTryout extends Model
         'jumlah_benar',
         'jumlah_salah',
         'skor',
-        'waktu_selesai'
+        'waktu_selesai',
     ];
 
     public function user()

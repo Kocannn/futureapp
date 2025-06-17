@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\JawabanUser;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class JawabanUserController extends Controller
@@ -12,11 +11,11 @@ class JawabanUserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $hasil = HasilTryout::with('user', 'paket', 'jawabans.soal')->get();
-    return view('admin.hasil.index', compact('hasil'));
-}
+    {
+        $hasil = HasilTryout::with('user', 'paket', 'jawabans.soal')->get();
 
+        return view('admin.hasil.index', compact('hasil'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -37,8 +36,6 @@ class JawabanUserController extends Controller
     /**
      * Display the specified resource.
      */
-
-     
     public function show(JawabanUser $jawabanUser)
     {
         //
@@ -67,13 +64,14 @@ class JawabanUserController extends Controller
     {
         //
     }
-    public function jawabans()
-{
-    return $this->hasMany(JawabanUser::class, 'paket_id', 'paket_id')->where('user_id', $this->user_id);
-}
-public function soal()
-{
-    return $this->belongsTo(Soal::class);
-}
 
+    public function jawabans()
+    {
+        return $this->hasMany(JawabanUser::class, 'paket_id', 'paket_id')->where('user_id', $this->user_id);
+    }
+
+    public function soal()
+    {
+        return $this->belongsTo(Soal::class);
+    }
 }

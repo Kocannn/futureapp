@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Paket;
+use Illuminate\Http\Request;
 
 class PaketController extends Controller
 {
     public function index()
     {
         $pakets = Paket::all();
+
         return view('admin.paket.index', compact('pakets'));
     }
 
@@ -53,11 +54,14 @@ class PaketController extends Controller
     public function destroy(Paket $paket)
     {
         $paket->delete();
+
         return redirect()->route('admin.paket.index')->with('success', 'Paket berhasil dihapus!');
     }
+
     public function show($id)
     {
         $paket = Paket::with('soals')->findOrFail($id);
+
         return view('admin.paket.show', compact('paket'));
     }
 }
