@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
     public function index()
     {
         $kategoris = Kategori::all();
+
         return view('admin.kategori.index', compact('kategoris'));
     }
 
@@ -26,18 +27,21 @@ class KategoriController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
         Kategori::create($request->only(['nama', 'deskripsi']));
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     public function show($id)
     {
         $kategori = Kategori::findOrFail($id);
+
         return view('admin.kategori.show', compact('kategori'));
     }
 
     public function edit($id)
     {
         $kategori = Kategori::findOrFail($id);
+
         return view('admin.kategori.edit', compact('kategori'));
     }
 
@@ -49,6 +53,7 @@ class KategoriController extends Controller
         ]);
         $kategori = Kategori::findOrFail($id);
         $kategori->update($request->only(['nama', 'deskripsi']));
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diupdate!');
     }
 
@@ -56,6 +61,7 @@ class KategoriController extends Controller
     {
         $kategori = Kategori::findOrFail($id);
         $kategori->delete();
+
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

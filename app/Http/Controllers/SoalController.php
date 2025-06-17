@@ -16,6 +16,7 @@ class SoalController extends Controller
     {
 
         $soals = Soal::with('paket')->latest()->get();
+
         return view('admin.soal.index', compact('soals'));
     }
 
@@ -25,6 +26,7 @@ class SoalController extends Controller
     public function create()
     {
         $paketSoals = Paket::all();
+
         return view('admin.soal.create', compact('paketSoals'));
     }
 
@@ -35,7 +37,7 @@ class SoalController extends Controller
     {
         $request->validate([
             'paket_id' => 'required|exists:pakets,id',
-            'pertanyaan' => 'required|string',
+            'pertanyaan' => 'required',
             'pilihan_a' => 'required|string',
             'pilihan_b' => 'required|string',
             'pilihan_c' => 'required|string',
@@ -48,7 +50,6 @@ class SoalController extends Controller
 
         return redirect()->route('admin.soal.index')->with('success', 'Soal berhasil ditambahkan.');
     }
-
 
     /**
      * Show the form for editing the specified resource.

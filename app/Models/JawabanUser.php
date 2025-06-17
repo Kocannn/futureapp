@@ -15,7 +15,7 @@ class JawabanUser extends Model
         'user_id',
         'paket_id',
         'soal_id',
-        'jawaban_user'
+        'jawaban_user',
     ];
 
     public function user()

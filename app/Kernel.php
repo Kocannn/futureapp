@@ -56,7 +56,7 @@ class Kernel extends HttpKernel
 
         // ✅ Tambahan middleware custom
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
-        'is_user'  => \App\Http\Middleware\IsUser::class,
+        'is_user' => \App\Http\Middleware\IsUser::class,
         'check.role' => \App\Http\Middleware\CheckRole::class,
     ];
 }

@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Paket;
 use App\Models\Soal;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class SoalSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class SoalSeeder extends Seeder
                 'nama' => 'Paket Soal Default',
                 'deskripsi' => 'Paket soal yang dibuat otomatis oleh seeder',
                 'durasi' => 90,
-                'status' => 'aktif'
+                'status' => 'aktif',
             ]);
             $paketIds = [$paket->id];
         }
@@ -58,7 +58,7 @@ class SoalSeeder extends Seeder
                             'C' => $correct - $faker->numberBetween(1, 5),
                             'D' => $a * $b * $c,
                             'E' => $a * $b + $c,
-                            'correct' => 'A'
+                            'correct' => 'A',
                         ];
                     } elseif (strpos($question, 'x²') !== false) {
                         $a = intval($numbers[0]);
@@ -71,7 +71,7 @@ class SoalSeeder extends Seeder
                             'C' => -$correct,
                             'D' => sqrt($b + $a),
                             'E' => $b - $a,
-                            'correct' => 'B'
+                            'correct' => 'B',
                         ];
                     } elseif (strpos($question, 'segitiga') !== false) {
                         $a = intval($numbers[0]);
@@ -84,7 +84,7 @@ class SoalSeeder extends Seeder
                             'C' => $correct + $faker->numberBetween(1, 5),
                             'D' => $correct - $faker->numberBetween(1, 5),
                             'E' => 2 * $correct,
-                            'correct' => 'A'
+                            'correct' => 'A',
                         ];
                     } elseif (strpos($question, 'log') !== false) {
                         $a = intval($numbers[0]);
@@ -96,7 +96,7 @@ class SoalSeeder extends Seeder
                             'C' => $correct,
                             'D' => $a * 2,
                             'E' => pow($a, 2),
-                            'correct' => 'C'
+                            'correct' => 'C',
                         ];
                     } elseif (strpos($question, 'lingkaran') !== false) {
                         $r = intval($numbers[0]);
@@ -108,7 +108,7 @@ class SoalSeeder extends Seeder
                             'C' => $correct + $faker->numberBetween(1, 5),
                             'D' => $correct,
                             'E' => $r * $r,
-                            'correct' => 'D'
+                            'correct' => 'D',
                         ];
                     }
 
@@ -119,9 +119,9 @@ class SoalSeeder extends Seeder
                         'C' => $faker->numberBetween(101, 150),
                         'D' => $faker->numberBetween(151, 200),
                         'E' => $faker->numberBetween(201, 250),
-                        'correct' => $faker->randomElement(['A', 'B', 'C', 'D', 'E'])
+                        'correct' => $faker->randomElement(['A', 'B', 'C', 'D', 'E']),
                     ];
-                }
+                },
             ],
 
             'bahasa_indonesia' => [
@@ -130,7 +130,7 @@ class SoalSeeder extends Seeder
                     'Arti dari kata "%s" adalah',
                     'Kalimat berikut yang menggunakan majas personifikasi adalah',
                     'Makna dari peribahasa "%s" adalah',
-                    'Manakah yang merupakan contoh kalimat efektif?'
+                    'Manakah yang merupakan contoh kalimat efektif?',
                 ],
                 'options' => function ($faker, $question) {
                     // Generate appropriate answers based on the question
@@ -141,7 +141,7 @@ class SoalSeeder extends Seeder
                             'C' => 'Saya pergi ke pasar membeli sayur dan buah',
                             'D' => 'Saya pergi, ke pasar, membeli sayur dan buah.',
                             'E' => 'Saya, pergi ke pasar membeli sayur dan buah.',
-                            'correct' => 'A'
+                            'correct' => 'A',
                         ];
                     } elseif (strpos($question, 'Arti dari kata') !== false) {
                         // Common Indonesian words with meanings
@@ -150,7 +150,7 @@ class SoalSeeder extends Seeder
                             'Suaka' => 'Tempat untuk berlindung atau mengungsi',
                             'Hakiki' => 'Sebenarnya atau sesungguhnya',
                             'Khalayak' => 'Orang banyak atau masyarakat',
-                            'Lugas' => 'Tanpa hiasan atau polos'
+                            'Lugas' => 'Tanpa hiasan atau polos',
                         ];
 
                         $word = array_rand($words);
@@ -170,7 +170,7 @@ class SoalSeeder extends Seeder
                             'D' => $incorrectValues[2],
                             'E' => $incorrectValues[3],
                             'correct' => 'A',
-                            'question' => $question
+                            'question' => $question,
                         ];
                     } elseif (strpos($question, 'majas personifikasi') !== false) {
                         return [
@@ -179,7 +179,7 @@ class SoalSeeder extends Seeder
                             'C' => 'Rumahnya sangat besar.',
                             'D' => 'Dia adalah bunga di antara kaktus.',
                             'E' => 'Saya akan bekerja keras untuk itu.',
-                            'correct' => 'B'
+                            'correct' => 'B',
                         ];
                     } elseif (strpos($question, 'peribahasa') !== false) {
                         // Indonesian proverbs and meanings
@@ -187,7 +187,7 @@ class SoalSeeder extends Seeder
                             'Air beriak tanda tak dalam' => 'Orang yang banyak bicara biasanya sedikit ilmunya',
                             'Bagai air di daun talas' => 'Tidak tetap pendirian',
                             'Ada gula ada semut' => 'Di mana ada keuntungan, di situ orang akan berkumpul',
-                            'Berat sama dipikul, ringan sama dijinjing' => 'Bekerja sama dalam suka dan duka'
+                            'Berat sama dipikul, ringan sama dijinjing' => 'Bekerja sama dalam suka dan duka',
                         ];
 
                         $proverb = array_rand($proverbs);
@@ -207,7 +207,7 @@ class SoalSeeder extends Seeder
                             'D' => $correct,
                             'E' => 'Semua jawaban di atas salah',
                             'correct' => 'D',
-                            'question' => $question
+                            'question' => $question,
                         ];
                     } elseif (strpos($question, 'kalimat efektif') !== false) {
                         return [
@@ -216,7 +216,7 @@ class SoalSeeder extends Seeder
                             'C' => 'Para hadirin sekalian diharapkan tenang.',
                             'D' => 'Dia merasa amat sangat sedih sekali.',
                             'E' => 'Dalam hal ini saya mau menyimpulkan bahwa...',
-                            'correct' => 'B'
+                            'correct' => 'B',
                         ];
                     }
 
@@ -227,9 +227,9 @@ class SoalSeeder extends Seeder
                         'C' => $faker->sentence(6),
                         'D' => $faker->sentence(6),
                         'E' => $faker->sentence(6),
-                        'correct' => $faker->randomElement(['A', 'B', 'C', 'D', 'E'])
+                        'correct' => $faker->randomElement(['A', 'B', 'C', 'D', 'E']),
                     ];
-                }
+                },
             ],
 
             'pengetahuan_umum' => [
@@ -238,7 +238,7 @@ class SoalSeeder extends Seeder
                     'Siapakah penemu %s?',
                     '%s adalah nama lain dari',
                     'Mata uang resmi %s adalah',
-                    'Peristiwa %s terjadi pada tahun'
+                    'Peristiwa %s terjadi pada tahun',
                 ],
                 'options' => function ($faker, $question) {
                     if (strpos($question, 'Ibukota') !== false) {
@@ -247,7 +247,7 @@ class SoalSeeder extends Seeder
                             'Malaysia' => 'Kuala Lumpur',
                             'Jepang' => 'Tokyo',
                             'Thailand' => 'Bangkok',
-                            'Filipina' => 'Manila'
+                            'Filipina' => 'Manila',
                         ];
 
                         $country = array_rand($countries);
@@ -267,7 +267,7 @@ class SoalSeeder extends Seeder
                             'D' => $incorrectValues[2],
                             'E' => $incorrectValues[3],
                             'correct' => 'B',
-                            'question' => $question
+                            'question' => $question,
                         ];
                     }
 
@@ -281,10 +281,10 @@ class SoalSeeder extends Seeder
                         'C' => $faker->word,
                         'D' => $faker->word,
                         'E' => $faker->word,
-                        'correct' => $choices[$correctIndex]
+                        'correct' => $choices[$correctIndex],
                     ];
-                }
-            ]
+                },
+            ],
         ];
 
         // Create 200 questions
@@ -331,7 +331,7 @@ class SoalSeeder extends Seeder
                 'pilihan_d' => $options['D'],
                 'pilihan_e' => $options['E'],
                 'jawaban_benar' => $correctAnswer,
-                'pembahasan' => $faker->paragraph(2)
+                'pembahasan' => $faker->paragraph(2),
             ]);
         }
     }

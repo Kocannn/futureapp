@@ -221,9 +221,41 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-4">
-                                    <p class="text-gray-800 leading-relaxed">{{ $jawaban->soal->pertanyaan }}</p>
-                                </div>
+<div class="mb-4">
+    <p class="text-gray-800 leading-relaxed">{{ $jawaban->soal->pertanyaan }}</p>
+
+    @if(!empty($jawaban->soal->tables))
+        @php
+            $tableData = json_decode($jawaban->soal->tables, true);
+            $headers = $tableData['headers'] ?? [];
+            $rows = $tableData['rows'] ?? [];
+        @endphp
+        <div class="overflow-x-auto my-4">
+            <table class="min-w-full border border-gray-300 mb-4">
+                <thead class="bg-gray-50">
+                    <tr>
+                        @foreach($headers as $header)
+                            <th class="border border-gray-300 p-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {{ $header }}
+                            </th>
+                        @endforeach
+                    </tr>
+                </theadj>
+                <tbody>
+                    @foreach($rows as $row)
+                        <tr class="bg-white">
+                            @foreach($row as $cell)
+                                <td class="border border-gray-300 p-2">
+                                    {{ $cell }}
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
 
                                 <div class="grid grid-cols-1 gap-2">
                                     @php
