@@ -17,6 +17,7 @@ class PaketController extends Controller
     {
 
         $pakets = Paket::latest()->get();
+
         return view('admin.paket.index', compact('pakets'));
     }
 
@@ -33,7 +34,6 @@ class PaketController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -59,6 +59,7 @@ class PaketController extends Controller
     public function show($id)
     {
         $paket = Paket::with('soals')->findOrFail($id);
+
         return view('admin.paket.show', compact('paket'));
     }
 
@@ -71,13 +72,13 @@ class PaketController extends Controller
     public function edit($id)
     {
         $paket = Paket::findOrFail($id);
+
         return view('admin.paket.edit', compact('paket'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

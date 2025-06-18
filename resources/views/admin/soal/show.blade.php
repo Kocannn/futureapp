@@ -38,10 +38,43 @@
                 </div>
 
                 <!-- Pertanyaan -->
-                <div>
-                    <h3 class="text-sm font-medium text-gray-500 mb-2">Pertanyaan</h3>
-                    <div class="p-4 bg-gray-50 rounded-lg text-gray-900">{{ $soal->pertanyaan }}</div>
+<div>
+    <h3 class="text-sm font-medium text-gray-500 mb-2">Pertanyaan</h3>
+    <div class="p-4 bg-gray-50 rounded-lg text-gray-900">
+        @if(!empty($soal->tables))
+            @php
+                $tableData = json_decode($soal->tables, true);
+            @endphp
+            @if(isset($tableData['headers']) && isset($tableData['rows']))
+                <div class="overflow-x-auto my-4">
+                    <table class="min-w-full border border-gray-300 mb-4">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                @foreach($tableData['headers'] as $header)
+                                    <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-300">
+                                        {{ $header }}
+                                    </th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($tableData['rows'] as $row)
+                                <tr>
+                                    @foreach($row as $cell)
+                                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500 border border-gray-300">
+                                            {{ $cell }}
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
+            @endif
+        @endif
+        {!! $soal->pertanyaan !!}
+    </div>
+</div>
 
                 <!-- Pilihan Jawaban -->
                 <div>
@@ -60,10 +93,10 @@
                         @foreach($options as $key => $value)
                             @if($value)
                                 <div class="flex items-center space-x-3 p-2 rounded-lg {{ $key === $soal->jawaban_benar ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-100' }}">
-                                    <div class="w-8 h-8 {{ $key === $soal->jawaban_benar ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700' }} rounded-full flex items-center justify-center">
-                                        <span class="font-medium">{{ $key }}</span>
-                                    </div>
-                                    <span class="text-gray-800">{{ $value }}</span>
+                            <div class="w-8 h-8 {{ $key === $soal->jawaban_benar ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700' }} rounded-full flex items-center justify-center">
+                                    <span class="font-medium">{{ $key }}</span>
+                                </div>
+                                <span class="text-gray-800">{!! $value !!}</span>
                                     @if($key === $soal->jawaban_benar)
                                         <span class="text-sm text-green-600 font-medium">(Jawaban Benar)</span>
                                     @endif

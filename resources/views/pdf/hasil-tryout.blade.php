@@ -113,9 +113,44 @@
     <!-- Pembahasan Soal Section -->
     <h2>Pembahasan Soal</h2>
     @foreach($jawaban as $index => $item)
-    <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
-        <div style="font-weight: bold; margin-bottom: 5px;">Soal #{{ $index + 1 }}</div>
-        <div style="margin-bottom: 5px;">{{ $item->soal->pertanyaan }}</div>
+<div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
+    <div style="font-weight: bold; margin-bottom: 5px;">Soal #{{ $index + 1 }}</div>
+    <div style="margin-bottom: 5px;">
+        {{ $item->soal->pertanyaan }}
+
+        @if(!empty($item->soal->tables))
+            @php
+                $tableData = json_decode($item->soal->tables, true);
+                $headers = $tableData['headers'] ?? [];
+                $rows = $tableData['rows'] ?? [];
+            @endphp
+            <div style="margin-top: 10px; margin-bottom: 10px; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd; font-size: 10px;">
+                    <thead>
+                        <tr style="background-color: #f5f5f5;">
+                            @foreach($headers as $header)
+                                <th style="border: 1px solid #ddd; padding: 4px; text-align: left; font-weight: bold;">
+                                    {{ $header }}
+                                </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($rows as $row)
+                            <tr>
+                                @foreach($row as $cell)
+                                    <td style="border: 1px solid #ddd; padding: 4px;">
+                                        {{ $cell }}
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
+
 
         <div style="display: flex; margin-bottom: 5px;">
             <div style="width: 120px; font-weight: bold;">Jawaban Anda:</div>
@@ -140,9 +175,5 @@
     </div>
     @endforeach
 
-    <div style="text-align: center; font-size: 10px; margin-top: 30px;">
-    <div style="text-align: center; font-size: 10px; margin-top: 30px;">
-        Dokumen ini dicetak pada {{ now()->format('d F Y H:i') }}
-    </div>
 </body>
 </html>

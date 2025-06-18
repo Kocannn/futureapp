@@ -159,9 +159,41 @@
                                     @endif
                                 </div>
 
-                                <div class="text-gray-800 font-medium mb-6 leading-relaxed">
-                                    {!! nl2br(e($jawab->soal->pertanyaan)) !!}
-                                </div>
+<div class="text-gray-800 font-medium mb-6 leading-relaxed">
+    {!! $jawab->soal->pertanyaan !!}
+
+    @if(!empty($jawab->soal->tables))
+        @php
+            $tableData = json_decode($jawab->soal->tables, true);
+            $headers = $tableData['headers'] ?? [];
+            $rows = $tableData['rows'] ?? [];
+        @endphp
+        <div class="overflow-x-auto my-4">
+            <table class="min-w-full border border-gray-300 mb-4">
+                <thead class="bg-gray-50">
+                    <tr>
+                        @foreach($headers as $header)
+                            <th class="border border-gray-300 p-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {{ $header }}
+                            </th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($rows as $row)
+                        <tr class="bg-white">
+                            @foreach($row as $cell)
+                                <td class="border border-gray-300 p-2">
+                                    {{ $cell }}
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
 
                                 <!-- Options -->
                                 <div class="grid grid-cols-1 gap-3 mb-6">
@@ -185,9 +217,7 @@
                                                     {{ $key === $jawab->jawaban_user && $key !== $jawab->soal->jawaban_benar ? 'bg-red-500 text-white' : '' }}">
                                                     {{ $key }}
                                                 </div>
-                                                <span class="text-gray-800 flex-1 {{ $key === $jawab->soal->jawaban_benar ? 'font-medium' : '' }}">
-                                                    {{ $option }}
-                                                </span>
+                                    <span class="text-gray-800 group-hover:text-gray-900">{!! $option !!}</span>
                                                 <div class="flex items-center space-x-2">
                                                     @if($key === $jawab->jawaban_user)
                                                         <span class="text-xs text-blue-600 font-medium px-2 py-1 bg-blue-100 rounded-full">Jawaban Anda</span>
@@ -254,7 +284,7 @@ function downloadPDF() {
     const button = event.target.closest('button');
     const originalText = button.innerHTML;
     button.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="https://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>

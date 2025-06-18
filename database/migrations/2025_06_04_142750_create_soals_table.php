@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('paket_id')->constrained('pakets')->onDelete('cascade');
             $table->text('pertanyaan');
+            $table->json('tables')->nullable(); // New field for storing tables separately
             $table->string('pilihan_a');
             $table->string('pilihan_b');
             $table->string('pilihan_c')->nullable();

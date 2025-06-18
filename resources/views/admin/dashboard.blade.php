@@ -59,7 +59,7 @@
                     'color' => 'purple',
                     'bgColor' => 'bg-purple-50',
                     'textColor' => 'text-purple-600',
-                    'route' => 'admin.user.index'
+                    'route' => 'admin.users.index'
                 ],
                 [
                     'title' => 'Tryout Hari Ini',
@@ -155,7 +155,7 @@
                                 'hoverBg' => 'hover:bg-amber-100',
                                 'textColor' => 'text-amber-600',
                                 'hoverText' => 'group-hover:text-amber-700',
-                                'route' => 'admin.user.index'
+                                'route' => 'admin.users.index'
                             ]
                         ];
                     @endphp
