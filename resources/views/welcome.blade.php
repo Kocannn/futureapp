@@ -213,7 +213,10 @@
         <!-- Kontak -->
         <div>
             <h5 class="text-lg font-semibold text-slate-800 mb-2">Kontak Kami</h5>
-            <p class="text-sm text-slate-600 mt-1">WhatsApp: <a href="https://wa.me/6282259672747" target="_blank" class="text-indigo-600 hover:underline">+62 812-3456-7890</a></p>
+            <p class="text-sm text-slate-600 mt-1">WhatsApp: 
+  <a href="https://wa.me/6282259672747" target="_blank" class="text-indigo-600 hover:underline">+62 822-5967-2747</a>
+</p>
+
         </div>
 
         <!-- Media Sosial -->
