@@ -8,7 +8,7 @@
                         <div class="flex-shrink-0">
                     <a href="{{ auth()->check() && auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="flex items-center">
                         <img src="{{ asset('images/FUTURE.APT__1.png?v=2') }}" alt="Logo" class="w-10 h-auto">
-                        <span class="ml-2 text-xl font-bold text-gray-900">TryoutApp</span>
+                        <span class="ml-2 text-xl font-bold text-gray-900">FUTURE.APT</span>
                     </a>
                 </div>
 
