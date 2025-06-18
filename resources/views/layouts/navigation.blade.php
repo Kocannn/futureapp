@@ -5,13 +5,14 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{{ auth()->check() && auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="flex items-center">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <span class="ml-2 text-xl font-bold text-gray-900">TryoutApp</span>
+                        <div class="flex-shrink-0">
+                    <a href="{{ auth()->check() && auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="flex items-center">
+                        <img src="{{ asset('images/FUTURE.APT__1.png?v=2') }}" alt="Logo" class="w-10 h-auto">
+                        <span class="ml-2 text-xl font-bold text-gray-900">FUTURE.APT</span>
                     </a>
+                </div>
+
+            
                 </div>
 
                 <!-- Navigation Links -->
