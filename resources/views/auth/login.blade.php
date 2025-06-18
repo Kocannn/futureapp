@@ -6,7 +6,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            /* Background gradien tegas */
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: #111;
             min-height: 100vh;
@@ -18,7 +17,6 @@
             justify-content: center;
             align-items: center;
             padding: 3rem;
-            /* background lebih melebar dan mengisi */
             background: linear-gradient(135deg, #1e3a8a 40%, #3b82f6 100%);
         }
 
@@ -29,23 +27,28 @@
             padding: 3rem 3.5rem;
             border-radius: 12px;
             box-sizing: border-box;
-            border: 2px solid #1e3a8a; /* border tegas */
+            border: 2px solid #1e3a8a;
             box-shadow: 0 10px 20px rgba(29, 78, 216, 0.3);
             user-select: none;
+            text-align: center;
+        }
+
+        .login-logo {
+            margin-bottom: 1rem;
         }
 
         .login-title {
             font-weight: 700;
             font-size: 2.25rem;
-            margin-bottom: 2.5rem;
-            color: #1e3a8a; /* warna tegas biru gelap */
-            text-align: center;
+            margin-bottom: 2rem;
+            color: #1e3a8a;
         }
 
         form.login-form {
             display: flex;
             flex-direction: column;
             gap: 1.75rem;
+            text-align: left;
         }
 
         label {
@@ -127,13 +130,12 @@
             color: #113270;
         }
 
-        /* Tombol login lebih kecil */
         .btn-primary {
             background-color: #1e40af;
             color: white;
             font-weight: 800;
-            padding: 0.5rem 1.5rem; /* padding dikurangi */
-            font-size: 0.95rem;      /* font size lebih kecil */
+            padding: 0.5rem 1.5rem;
+            font-size: 0.95rem;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -147,12 +149,12 @@
             box-shadow: 0 5px 10px rgba(20, 48, 110, 0.7);
         }
 
-        /* Responsive */
         @media (max-width: 760px) {
             .login-container {
                 width: 100%;
                 padding: 2.5rem 1.5rem;
             }
+
             .login-title {
                 font-size: 1.8rem;
             }
@@ -161,7 +163,12 @@
 
     <div class="login-page">
         <div class="login-container">
-            <h2 class="login-title">{{ __('FUTUREAPT') }}</h2>
+            <!-- LOGO -->
+            <div class="login-logo">
+                <img src="{{ asset('images/FUTURE.APT__1.png') }}" alt="Future Apt Logo" class="w-28 h-auto mx-auto">
+            </div>
+
+            <!-- <h2 class="login-title">{{ __('FUTUREAPT') }}</h2> -->
 
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
